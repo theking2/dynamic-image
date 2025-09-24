@@ -23,8 +23,8 @@ imagerectangle($image, 10, 10, $width-10, $height-10, $red);
 $text = "$width x $height";
 //$text = "$r,$g,$b";
 $font = 5; // Built-in GD font (1-5)
-$text_x = intval($width - imagefontwidth($font) * strlen($text)) / 2);
-$text_y = intval(($height - imagefontheight($font)) / 2);
+$text_x = intval( ($width - imagefontwidth($font) * strlen($text)) / 2 );
+$text_y = intval( ($height - imagefontheight($font)) / 2 );
 imagestring($image, $font, $text_x, $text_y, $text, $black);
 
 // Output the image as PNG
