@@ -18,7 +18,9 @@ imagefill($image, 0, 0, $back);
 
 // Draw a red rectangle
 imagerectangle($image, 10, 10, $width-10, $height-10, $red);
-
+// Draw diagonals
+imageline($image, 10, 10, $width-10, $height-10, $red);
+imageline($image, $width-10, 10, 10, $height-10, $red);
 // Add some text to the image
 $text = "$width x $height";
 //$text = "$r,$g,$b";
