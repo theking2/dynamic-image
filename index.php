@@ -11,7 +11,7 @@ $image = imagecreate($width, $height);
 // Define some colors
 $back = imagecolorallocate($image, $r, $g, $b);
 $black = getContrastColor($image, $r, $g, $b);
-$red = getContrastColor($image, $r, $g, $b);
+$red = getContrastColor($image, $r, $b, $r);
 
 // Fill the background with white
 imagefill($image, 0, 0, $back);
@@ -19,8 +19,8 @@ imagefill($image, 0, 0, $back);
 // Draw a red rectangle
 imagerectangle($image, 10, 10, $width-10, $height-10, $red);
 // Draw diagonals
-imageline($image, 10, 10, $width-10, $height-10, $red);
-imageline($image, $width-10, 10, 10, $height-10, $red);
+imageline($image, 0, 0, $width, $height, $red);
+imageline($image, $width, 0, 0, $height, $red);
 // Add some text to the image
 $text = "$width x $height";
 //$text = "$r,$g,$b";
