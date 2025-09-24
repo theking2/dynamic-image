@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-
 list($width, $height) = getSizes();
 list($r, $g, $b) = getColor();
+
 
 // Set the content type header to indicate this is a PNG image
 header('Content-Type: image/png');
@@ -9,9 +9,9 @@ header('Content-Type: image/png');
 $image = imagecreate($width, $height);
 
 // Define some colors
-$back = imagecolorallocate($image, $r, $g, $b); // White background
-$black = imagecolorallocate($image, 0, 0, 0);       // Black text
-$red = imagecolorallocate($image, 255, 0, 0);       // Red rectangle
+$back = imagecolorallocate($image, $r, $g, $b);
+$black = getContrastColor($image, $r, $g, $b);
+$red = getContrastColor($image, $r, $g, $b);
 
 // Fill the background with white
 imagefill($image, 0, 0, $back);
@@ -54,7 +54,7 @@ function getSizes(): array
 
 function getColor(): array
 {
-    $values = explode(',', $_GET['color'] ?? '239,255,239');
+    $values = explode(',', $_GET['color'] ?? '8,8,8');
     
     if (count($values) !== 3) return [239, 255, 239];
     
@@ -64,4 +64,16 @@ function getColor(): array
 		$values
 	);
     return $result;
+}
+
+function getContrastColor($image, $r, $g, $b) {
+    // Calculate brightness using YIQ formula
+    $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    // If it's bright, return dark (black), else return light (white)
+    if($brightness > 128) {
+        return imagecolorallocate($image, 0, 0, 0); // black
+    } else {
+        return imagecolorallocate($image, 255, 255, 255); // white
+    }
 }
