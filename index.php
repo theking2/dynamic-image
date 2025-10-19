@@ -9,28 +9,25 @@ header('Content-Type: image/png');
 $image = imagecreate($width, $height);
 
 // Define some colors
-$back = imagecolorallocate($image, $r, $g, $b); // Background color
-$black = imagecolorallocate($image, 0, 0, 0);       // Black text
-$red = imagecolorallocate($image, 255, 0, 0);       // Red rectangle
+$back = imagecolorallocate($image, $r, $g, $b);
+$black = getContrastColor($image, $r, $g, $b);
+$red = getContrastColor($image, $r, $b, $r);
 
-// Fill the background with the specified color
+// Fill the background with white
 imagefill($image, 0, 0, $back);
 
-// Draw a red rectangle border
+// Draw a red rectangle
 imagerectangle($image, 10, 10, $width-10, $height-10, $red);
-
-// Add dimensions text to the image
+// Draw diagonals
+imageline($image, 0, 0, $width, $height, $red);
+imageline($image, $width, 0, 0, $height, $red);
+// Add some text to the image
 $text = "$width x $height";
+//$text = "$r,$g,$b";
 $font = 5; // Built-in GD font (1-5)
-$text_x = (int)(($width - imagefontwidth($font) * strlen($text)) / 2);
-$text_y = (int)(($height - imagefontheight($font)) / 2 - 10);
+$text_x = intval( ($width - imagefontwidth($font) * strlen($text)) / 2 );
+$text_y = intval( ($height - imagefontheight($font)) / 2 );
 imagestring($image, $font, $text_x, $text_y, $text, $black);
-
-// Add color information text
-$color_text = "$r,$g,$b";
-$color_text_x = (int)(($width - imagefontwidth($font) * strlen($color_text)) / 2);
-$color_text_y = (int)(($height - imagefontheight($font)) / 2 + 10);
-imagestring($image, $font, $color_text_x, $color_text_y, $color_text, $black);
 
 // Output the image as PNG
 imagepng($image);
@@ -59,7 +56,7 @@ function getSizes(): array
 
 function getColor(): array
 {
-    $values = explode(',', $_GET['color'] ?? '239,255,239');
+    $values = explode(',', $_GET['color'] ?? '8,8,8');
     
     if (count($values) !== 3) return [239, 255, 239];
     
@@ -69,4 +66,16 @@ function getColor(): array
 		$values
 	);
     return $result;
+}
+
+function getContrastColor($image, $r, $g, $b) {
+    // Calculate brightness using YIQ formula
+    $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    // If it's bright, return dark (black), else return light (white)
+    if($brightness > 128) {
+        return imagecolorallocate($image, 0, 0, 0); // black
+    } else {
+        return imagecolorallocate($image, 255, 255, 255); // white
+    }
 }
