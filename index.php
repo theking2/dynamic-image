@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
+
 list($width, $height) = getSizes();
 list($r, $g, $b) = getColor();
-
 
 // Set the content type header to indicate this is a PNG image
 header('Content-Type: image/png');
