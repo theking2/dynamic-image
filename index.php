@@ -64,3 +64,15 @@ function getColor(): array
 	);
     return $result;
 }
+
+function getContrastColor($image, $r, $g, $b) {
+    // Calculate brightness using YIQ formula
+    $brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    // If it's bright, return dark (black), else return light (white)
+    if($brightness > 128) {
+        return imagecolorallocate($image, 0, 0, 0); // black
+    } else {
+        return imagecolorallocate($image, 255, 255, 255); // white
+    }
+}
