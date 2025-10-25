@@ -9,24 +9,21 @@ header('Content-Type: image/png');
 $image = imagecreate($width, $height);
 
 // Define some colors
-$back = imagecolorallocate($image, $r, $g, $b);
-$black = getContrastColor($image, $r, $g, $b);
-$red = getContrastColor($image, $r, $b, $r);
+$back = imagecolorallocate($image, $r, $g, $b); // Background color
+$black = imagecolorallocate($image, 0, 0, 0);       // Black text
+$red = imagecolorallocate($image, 255, 0, 0);       // Red rectangle
 
-// Fill the background with white
+// Fill the background with the specified color
 imagefill($image, 0, 0, $back);
 
 // Draw a red rectangle
 imagerectangle($image, 10, 10, $width-10, $height-10, $red);
-// Draw diagonals
-imageline($image, 0, 0, $width, $height, $red);
-imageline($image, $width, 0, 0, $height, $red);
+
 // Add some text to the image
-$text = "$width x $height";
-//$text = "$r,$g,$b";
+$text = "$r,$g,$b";
 $font = 5; // Built-in GD font (1-5)
-$text_x = intval( ($width - imagefontwidth($font) * strlen($text)) / 2 );
-$text_y = intval( ($height - imagefontheight($font)) / 2 );
+$text_x = (int)(($width - imagefontwidth($font) * strlen($text)) / 2);
+$text_y = (int)(($height - imagefontheight($font)) / 2);
 imagestring($image, $font, $text_x, $text_y, $text, $black);
 
 // Output the image as PNG
@@ -38,7 +35,7 @@ imagedestroy($image);
 function getSizes(): array
 {
 	// Get the size parameter from the query string
-	$size = $_GET['size']??'100x100';
+	$size = $_GET['size'] ?? '100x100';
 	// Parse the size parameter (format: WIDTHxHEIGHT)
 	$dimensions = explode('x', $size);
 
@@ -56,7 +53,7 @@ function getSizes(): array
 
 function getColor(): array
 {
-    $values = explode(',', $_GET['color'] ?? '8,8,8');
+    $values = explode(',', $_GET['color'] ?? '239,255,239');
     
     if (count($values) !== 3) return [239, 255, 239];
     
