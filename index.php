@@ -35,7 +35,7 @@ imagedestroy($image);
 function getSizes(): array
 {
 	// Get the size parameter from the query string
-	$size = $_GET['size']??'100x100';
+	$size = $_GET['size'] ?? '100x100';
 	// Parse the size parameter (format: WIDTHxHEIGHT)
 	$dimensions = explode('x', $size);
 
